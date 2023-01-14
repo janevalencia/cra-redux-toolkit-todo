@@ -1,6 +1,22 @@
-# Getting Started with Create React App
+# Todo App with Create React App with Redux-Toolkit
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
+
+## Dependencies
+
+- Reactjs
+- Redux-Toolkit
+- TailwindCSS
+- Typescript
+- DummyJSON API: https://dummyjson.com/docs/todos (CRUD REST API)
+
+## Deployment
+
+TBA - explain how to deploy this project if there is any changes.
+
+## Netlify
+
+TBA - project link on Netlify server (Live).
 
 ## Available Scripts
 
