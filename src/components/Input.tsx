@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
 
 // Props for the Input component.
@@ -16,7 +16,7 @@ const Input = ({placeholder} : InputProps) => {
                     type="text"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    className="p-2 rounded-lg flex-grow focus:outline-none"
+                    className="py-2 px-4 rounded-lg flex-grow focus:outline-none"
                     placeholder={placeholder}
                 />
                 <div className="flex flex-row gap-2">
