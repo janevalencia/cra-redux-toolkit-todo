@@ -1,10 +1,11 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Input } from './components';
 
 function App() {
   return (
-    <div className="App">
-      Hello World.
+    <div className="p-6 w-full flex flex-col items-center gap-4">
+      <p className='text-white'>List of the tasks</p>
+      <Input placeholder='Add a task ...' />
     </div>
   );
 }
