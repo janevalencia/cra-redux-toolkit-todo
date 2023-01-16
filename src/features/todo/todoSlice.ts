@@ -42,6 +42,15 @@ const todoSlice = createSlice({
                 userId: 5
             })
         },
+        updateStatus: (state, action: PayloadAction<{id: number, completed: boolean}>) => {
+            // Update the completed status of the task.
+            state.todos.map((todo) => {
+                if (todo.id === action.payload.id) {
+                    todo.completed = action.payload.completed
+                }
+                return todo;
+            })
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -70,7 +79,7 @@ const todoSlice = createSlice({
 export const selectAllTodos = (state: RootState) => state.todo.todos;
 
 // Export the actions.
-export const { add } = todoSlice.actions;
+export const { add, updateStatus } = todoSlice.actions;
 
 // Export default the reducer for this slice.
 export default todoSlice.reducer;

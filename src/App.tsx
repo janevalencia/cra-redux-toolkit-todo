@@ -39,7 +39,7 @@ function App() {
     <div className="p-6 w-full flex flex-col items-center gap-4">
       <div className='w-full md:w-[50%]'>
         {todos.map(todo => (
-          <Todo key={todo.id} title={todo.todo} completed={todo.completed} />
+          <Todo key={todo.id} id={todo.id} title={todo.todo} completed={todo.completed} />
         ))}
       </div>
       <Input placeholder='Add a task ...' />
