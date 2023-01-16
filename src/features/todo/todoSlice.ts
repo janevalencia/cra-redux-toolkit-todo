@@ -72,6 +72,7 @@ const todoSlice = createSlice({
         },
         removeTodo: (state, action: PayloadAction<number>) => {
             // Update the todo state by removing the todo.
+            state.todos = state.todos.filter(todo => todo.id !== action.payload)
         },
     },
     extraReducers: (builder) => {
