@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { add } from "../features/todo/todoSlice";
+import { AppDispatch } from "../app/store";
 
 // Props for the Input component.
 type InputProps = {
@@ -9,6 +12,8 @@ type InputProps = {
 const Input = ({placeholder} : InputProps) => {
     const [value, setValue] = useState<string>("");
 
+    const dispatch = useDispatch<AppDispatch>();
+    
     return (
         <div className="w-full md:w-[50%]">
             <div className="flex flex-row gap-2">
@@ -24,6 +29,10 @@ const Input = ({placeholder} : InputProps) => {
                         <MdAddTask
                             size={25}
                             className="text-white hover:text-green-600"
+                            onClick={() => { 
+                                dispatch(add(value)); // dispatching actions to reducer.
+                                setValue(""); // clear input after successful task add.
+                            }}
                         />
                     </button>
                     <button onClick={() => setValue("")}>

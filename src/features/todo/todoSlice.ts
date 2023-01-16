@@ -4,34 +4,30 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
 
 // First, create the thunk (allowing us to do async operation such as fetch from API).
-const fetchTodos = createAsyncThunk(
+export const fetchTodos = createAsyncThunk(
     'todo/fetchTodos',
     async () => {
-        try {
-            const res = await fetch(`${process.env.BASE_API_URL}?limit=5&skip=10`);
-            return (await res.json());
-        } catch (err) {
-            return (err as Error).message;
-        }
+        const res = await fetch(`${process.env.REACT_APP_URL}/user/5`);
+        return (await res.json());
     }
 )
 
 // Define a type for the slice state.
 interface TodoState {
     todos: Todo[],
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed',
+    loading: boolean,
     error: string | null
 }
 
 // Define the initial state using that type.
 const initialState: TodoState = {
     todos: [],
-    loading: 'idle',
+    loading: false,
     error: null
 }
 
 // Define Todo Slice.
-export const todoSlice = createSlice({
+const todoSlice = createSlice({
     name: 'todo',
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
@@ -40,30 +36,32 @@ export const todoSlice = createSlice({
         add: (state, action: PayloadAction<string>) => {
             // Add the newly created todo to the State.
             state.todos.push({
+                id: 1,
                 todo: action.payload,
-                completed: false
+                completed: false,
+                userId: 5
             })
         },
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchTodos.pending, (state, action) => {
+            .addCase(fetchTodos.pending, (state) => {
                 // Update loading state.
-                state.loading = 'pending';
+                state.loading = true;
             })
             .addCase(fetchTodos.fulfilled, (state, action) => {
                 // Update loading state.
-                state.loading = 'succeeded';
+                state.loading = false;
 
-                // Add the item into state todo list.
-                state.todos = state.todos.concat(action.payload);
+                // Set the api data to todo state.
+                state.todos = action.payload.todos;
             })
             .addCase(fetchTodos.rejected, (state, action) => {
                 // Update loading state.
-                state.loading = 'failed';
+                state.loading = false;
 
-                // Update error.
-                state.error =  action.error.message as string;
+                // Update error message.
+                state.error = action.error.message as string;
             })
     },
 })
