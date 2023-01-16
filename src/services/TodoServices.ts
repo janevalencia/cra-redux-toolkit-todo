@@ -3,7 +3,7 @@ import { CreateTodo } from "../types";
 
 // Fetch all todos.
 const getAll = () => {
-    return api.get("?limit=5&skip=10");
+    return api.get("?limit=3&skip=5");
 };
 
 // Fetch a todo by id.

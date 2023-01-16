@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdAddTask, MdCancel } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { add } from "../features/todo/todoSlice";
+import { createTodo } from "../features/todo/todoSlice";
 import { AppDispatch } from "../app/store";
 
 // Props for the Input component.
@@ -25,6 +25,18 @@ const Input = ({ placeholder }: InputProps) => {
 
     const dispatch = useDispatch<AppDispatch>();
 
+    // Add new todo task, calling reducer.
+    const addNew = () => {
+        // Dispatch adding new todo object.
+        dispatch(createTodo(value))
+        .then(res => {
+            setValue("");
+        })
+        .catch(e => {
+            console.error(e);
+        })
+    }
+
     return (
         <div className="w-full md:w-[50%]">
             <div className="flex flex-row gap-2">
@@ -38,9 +50,7 @@ const Input = ({ placeholder }: InputProps) => {
                 <div className="flex flex-row gap-2">
                     <button
                         disabled={disabled}
-                        onClick={() => {
-                            dispatch(add(value)); // dispatching actions to reducer.
-                        }}
+                        onClick={addNew}
                     >
                         <MdAddTask
                             size={25}

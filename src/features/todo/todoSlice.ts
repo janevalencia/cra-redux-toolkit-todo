@@ -32,46 +32,35 @@ export const createTodo = createAsyncThunk(
         const res = await TodoServices.create({
             todo: task,
             completed: false,
-            userId: 5
+            userId: 1
         });
         return res.data;
     }
 );
 
-// Async update a todo.
-export const updateTodo = createAsyncThunk(
-    'todo/updateTodo',
-    async ({ id, completed }: { id: number, completed: boolean }) => {
-        const res = await TodoServices.update(id, completed);
-        return res.data;
-    }
-);
+// Async update a todo (not being used because the API is dummy!).
+// export const updateTodo = createAsyncThunk(
+//     'todo/updateTodo',
+//     async ({ id, completed }: { id: number, completed: boolean }) => {
+//         const res = await TodoServices.update(id, completed);
+//         return res.data;
+//     }
+// );
 
-// Async delete a todo.
-export const deleteTodo = createAsyncThunk(
-    'todo/deleteTodo',
-    async (id: number) => {
-        await TodoServices.remove(id);
-        return id;
-    }
-);
+// Async delete a todo (not being used because the API is dummy!).
+// export const deleteTodo = createAsyncThunk(
+//     'todo/deleteTodo',
+//     async (id: number) => {
+//         await TodoServices.remove(id);
+//         return id;
+//     }
+// );
 
 // Define Todo Slice.
 const todoSlice = createSlice({
     name: 'todo',
-    // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        // Use the PayloadAction type to declare the contents of `action.payload`
-        add: (state, action: PayloadAction<string>) => {
-            // Add the newly created todo to the State.
-            state.todos.push({
-                id: 1,
-                todo: action.payload,
-                completed: false,
-                userId: 5
-            })
-        },
         updateStatus: (state, action: PayloadAction<{ id: number, completed: boolean }>) => {
             // Update the completed status of the task.
             state.todos.map((todo) => {
@@ -80,6 +69,9 @@ const todoSlice = createSlice({
                 }
                 return todo;
             })
+        },
+        removeTodo: (state, action: PayloadAction<number>) => {
+            // Update the todo state by removing the todo.
         },
     },
     extraReducers: (builder) => {
@@ -92,6 +84,9 @@ const todoSlice = createSlice({
                 // Update loading state.
                 state.loading = false;
 
+                // Update error state.
+                state.error = null;
+
                 // Set the api data to todo state.
                 state.todos = action.payload.todos;
             })
@@ -102,6 +97,18 @@ const todoSlice = createSlice({
                 // Update error message.
                 state.error = action.error.message as string;
             })
+            .addCase(createTodo.fulfilled, (state, action) => {
+                // EDGE CASE: Only for this project because the API doesn't return unique ID.
+                let newItem = action.payload;
+                newItem.id = state.todos.length + 1;
+
+                // Add new todo item.
+                state.todos.push(newItem);
+            })
+            .addCase(createTodo.rejected, (state, action) => {
+                console.error(action.error.message);
+                state.error = action.error.message as string;
+            })
     },
 })
 
@@ -109,7 +116,7 @@ const todoSlice = createSlice({
 export const selectAllTodos = (state: RootState) => state.todo.todos;
 
 // Export the actions.
-export const { add, updateStatus } = todoSlice.actions;
+export const { updateStatus, removeTodo } = todoSlice.actions;
 
 // Export default the reducer for this slice.
 export default todoSlice.reducer;
