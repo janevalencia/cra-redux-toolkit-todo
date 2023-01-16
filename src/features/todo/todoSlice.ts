@@ -2,29 +2,59 @@ import { Todo } from '../../types'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '../../app/store'
+import TodoServices from '../../services/TodoServices'
 
-// First, create the thunk (allowing us to do async operation such as fetch from API).
-export const fetchTodos = createAsyncThunk(
-    'todo/fetchTodos',
-    async () => {
-        const res = await fetch(`${process.env.REACT_APP_URL}?limit=3&skip=10`);
-        return (await res.json());
-    }
-)
-
-// Define a type for the slice state.
-interface TodoState {
+// Define the initial state using that type.
+const initialState: {
     todos: Todo[],
     loading: boolean,
     error: string | null
-}
-
-// Define the initial state using that type.
-const initialState: TodoState = {
+} = {
     todos: [],
     loading: false,
     error: null
 }
+
+// Create the thunks (allowing us to do async operation such as fetch from API).
+// Async get all todos.
+export const fetchTodos = createAsyncThunk(
+    'todo/fetchTodos',
+    async () => {
+        const res = await TodoServices.getAll();
+        return res.data;
+    }
+)
+
+// Async create new todo.
+export const createTodo = createAsyncThunk(
+    'todo/createTodo',
+    async (task: string) => {
+        const res = await TodoServices.create({
+            todo: task,
+            completed: false,
+            userId: 5
+        });
+        return res.data;
+    }
+);
+
+// Async update a todo.
+export const updateTodo = createAsyncThunk(
+    'todo/updateTodo',
+    async ({ id, completed }: { id: number, completed: boolean }) => {
+        const res = await TodoServices.update(id, completed);
+        return res.data;
+    }
+);
+
+// Async delete a todo.
+export const deleteTodo = createAsyncThunk(
+    'todo/deleteTodo',
+    async (id: number) => {
+        await TodoServices.remove(id);
+        return id;
+    }
+);
 
 // Define Todo Slice.
 const todoSlice = createSlice({
@@ -42,7 +72,7 @@ const todoSlice = createSlice({
                 userId: 5
             })
         },
-        updateStatus: (state, action: PayloadAction<{id: number, completed: boolean}>) => {
+        updateStatus: (state, action: PayloadAction<{ id: number, completed: boolean }>) => {
             // Update the completed status of the task.
             state.todos.map((todo) => {
                 if (todo.id === action.payload.id) {
