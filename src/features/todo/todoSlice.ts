@@ -7,7 +7,7 @@ import type { RootState } from '../../app/store'
 export const fetchTodos = createAsyncThunk(
     'todo/fetchTodos',
     async () => {
-        const res = await fetch(`${process.env.REACT_APP_URL}/user/5`);
+        const res = await fetch(`${process.env.REACT_APP_URL}?limit=3&skip=10`);
         return (await res.json());
     }
 )

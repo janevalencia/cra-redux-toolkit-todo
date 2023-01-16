@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Input } from './components';
+import { Input, Todo } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './app/store';
 import { fetchTodos } from './features/todo/todoSlice';
@@ -39,7 +39,7 @@ function App() {
     <div className="p-6 w-full flex flex-col items-center gap-4">
       <div className='w-full md:w-[50%]'>
         {todos.map(todo => (
-          <p key={todo.id} className='text-white'>{todo.todo}</p>
+          <Todo key={todo.id} title={todo.todo} completed={todo.completed} />
         ))}
       </div>
       <Input placeholder='Add a task ...' />
