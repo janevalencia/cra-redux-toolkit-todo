@@ -7,16 +7,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Reactjs
 - Redux-Toolkit
 - TailwindCSS
+- Axios
+- React-icons
 - Typescript
 - DummyJSON API: https://dummyjson.com/docs/todos (CRUD REST API)
 
-## Deployment
-
-TBA - explain how to deploy this project if there is any changes.
-
 ## Netlify
 
-TBA - project link on Netlify server (Live).
+The project is being served and deployed to Netlify. 
 
 ## Available Scripts
 
