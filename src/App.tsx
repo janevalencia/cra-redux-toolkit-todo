@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { Input, Todo } from './components';
+import { Input, List } from './components';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './app/store';
 import { fetchTodos } from './features/todo/todoSlice';
 
 function App() {
   // Redux-toolkit state data and dispatch action.
-  const { todos, loading, error } = useSelector( (state : RootState) => state.todo);
   const dispatch = useDispatch<AppDispatch>();
+  const { todos, loading, error } = useSelector( (state : RootState) => state.todo);
 
   // Run side-effect to initialise the todos.
   useEffect(() => {
@@ -37,11 +37,7 @@ function App() {
 
   return (
     <div className="p-6 w-full flex flex-col items-center gap-4">
-      <div className='w-full md:w-[50%]'>
-        {todos.map((todo, index) => (
-          <Todo key={todo.id} id={todo.id} title={todo.todo} completed={todo.completed} />
-        ))}
-      </div>
+      <List items={todos} />
       <Input placeholder='Add a task ...' />
     </div>
   );
